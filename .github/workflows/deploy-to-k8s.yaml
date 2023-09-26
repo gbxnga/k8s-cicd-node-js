@@ -53,5 +53,6 @@ jobs:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
         command: |
+              kubectl version
               kubectl cluster-info
               helm upgrade k8s-cicd-node-js --install --wait --set image.tag=${{ steps.slug.outputs.sha8 }} .devops/k8s/k8s-cicd-node-js -n default
