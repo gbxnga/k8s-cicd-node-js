@@ -41,11 +41,13 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     - name: kubeconfig
+      uses: koslib/helm-eks-action@master
       run: |
           aws eks update-kubeconfig --name my-test-cluster --region ${{ env.AWS_REGION }}  --kubeconfig ./kubeconfig
           echo 'KUBE_CONFIG_DATA<<EOF' >> $GITHUB_ENV
           echo $(cat ./kubeconfig | base64) >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV  
+          echo 'EOF' >> $GITHUB_ENV 
+          kubectl version 
           
     - name: helm deploy
       uses: koslib/helm-eks-action@master
@@ -55,5 +57,5 @@ jobs:
         command: |
               helm version
               kubectl version
-              kubectl cluster-info
+              kubectl cluster-info 
               helm upgrade k8s-cicd-node-js --install --wait --set image.tag=${{ steps.slug.outputs.sha8 }} .devops/k8s/k8s-cicd-node-js -n default
