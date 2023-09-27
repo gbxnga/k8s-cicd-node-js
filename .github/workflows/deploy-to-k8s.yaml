@@ -47,7 +47,7 @@ jobs:
           echo 'KUBE_CONFIG_DATA<<EOF' >> $GITHUB_ENV
           echo $(cat ./kubeconfig | base64) >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV 
-          kubectl version 
+          kubectl version  
           
     - name: helm deploy
       uses: koslib/helm-eks-action@master
