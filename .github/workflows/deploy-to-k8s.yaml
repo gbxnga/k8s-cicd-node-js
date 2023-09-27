@@ -45,8 +45,7 @@ jobs:
           aws eks update-kubeconfig --name my-test-cluster --region ${{ env.AWS_REGION }}  --kubeconfig ./kubeconfig
           echo 'KUBE_CONFIG_DATA<<EOF' >> $GITHUB_ENV
           echo $(cat ./kubeconfig | base64) >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV 
-          kubectl version  
+          echo 'EOF' >> $GITHUB_ENV   
           
     - name: helm deploy
       uses: koslib/helm-eks-action@master
