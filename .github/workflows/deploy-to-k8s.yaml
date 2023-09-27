@@ -51,9 +51,11 @@ jobs:
       uses: koslib/helm-eks-action@master
       env:
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: k8s-cicd-node-js
       with:
         command: |
               helm version
               kubectl version
               kubectl cluster-info 
-              helm upgrade k8s-cicd-node-js --install --wait --set image.tag=${{ steps.slug.outputs.sha8 }} .devops/k8s/k8s-cicd-node-js -n default
+              helm upgrade k8s-cicd-node-js --install --wait --set image.tag=${{ steps.slug.outputs.sha8 }} --set image.repository="$ECR_REGISTRY/$ECR_REPOSITORY" .devops/k8s/k8s-cicd-node-js -n default
